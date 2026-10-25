@@ -32,6 +32,7 @@ enum {
   CLICKED,
   CLOSED,
   FULLSCREENED,
+  MINIMIZED,
   RESIZED,
   N_SIGNALS
 };
@@ -215,6 +216,13 @@ static void
 clicked_cb (PhoshActivity *self)
 {
   g_signal_emit (self, signals[CLICKED], 0);
+}
+
+
+static void
+minimized_cb (PhoshActivity *self)
+{
+  g_signal_emit (self, signals[MINIMIZED], 0);
 }
 
 
@@ -728,6 +736,13 @@ phosh_activity_class_init (PhoshActivityClass *klass)
                                         G_TYPE_NONE, 1,
                                         G_TYPE_BOOLEAN);
 
+  signals[MINIMIZED] = g_signal_new ("minimized",
+                                     G_TYPE_FROM_CLASS (klass),
+                                     G_SIGNAL_RUN_LAST, 0, NULL, NULL,
+                                     NULL,
+                                     G_TYPE_NONE,
+                                     0);
+
   signals[RESIZED] = g_signal_new ("resized",
                                    G_TYPE_FROM_CLASS (klass),
                                    G_SIGNAL_RUN_LAST, 0, NULL, NULL,
@@ -752,6 +767,7 @@ phosh_activity_class_init (PhoshActivityClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, spinner);
   gtk_widget_class_bind_template_callback (widget_class, clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, closed_cb);
+  gtk_widget_class_bind_template_callback (widget_class, minimized_cb);
   gtk_widget_class_bind_template_callback (widget_class, draw_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_unfullscreen_clicked);
   gtk_widget_class_bind_template_callback (widget_class, removed_cb);
