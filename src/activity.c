@@ -747,13 +747,6 @@ phosh_activity_class_init (PhoshActivityClass *klass)
                                      G_TYPE_NONE,
                                      0);
 
-  signals[MINIMIZED] = g_signal_new ("minimized",
-                                     G_TYPE_FROM_CLASS (klass),
-                                     G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-                                     NULL,
-                                     G_TYPE_NONE,
-                                     0);
-
   signals[RESIZED] = g_signal_new ("resized",
                                    G_TYPE_FROM_CLASS (klass),
                                    G_SIGNAL_RUN_LAST, 0, NULL, NULL,
@@ -779,7 +772,6 @@ phosh_activity_class_init (PhoshActivityClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, spinner);
   gtk_widget_class_bind_template_callback (widget_class, clicked_cb);
   gtk_widget_class_bind_template_callback (widget_class, closed_cb);
-  gtk_widget_class_bind_template_callback (widget_class, minimized_cb);
   gtk_widget_class_bind_template_callback (widget_class, minimized_cb);
   gtk_widget_class_bind_template_callback (widget_class, draw_cb);
   gtk_widget_class_bind_template_callback (widget_class, on_unfullscreen_clicked);
