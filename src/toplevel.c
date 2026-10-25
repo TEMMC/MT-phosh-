@@ -29,6 +29,7 @@ enum {
   PHOSH_TOPLEVEL_PROP_APP_ID,
   PHOSH_TOPLEVEL_PROP_ACTIVATED,
   PHOSH_TOPLEVEL_PROP_MAXIMIZED,
+  PHOSH_TOPLEVEL_PROP_MINIMIZED,
   PHOSH_TOPLEVEL_PROP_FULLSCREEN,
   PHOSH_TOPLEVEL_PROP_LAST_PROP,
 };
@@ -44,7 +45,7 @@ struct _PhoshToplevel {
   GObject parent;
   struct zwlr_foreign_toplevel_handle_v1 *handle;
   struct zwlr_foreign_toplevel_handle_v1 *parent_handle;
-  gboolean configured, activated, maximized, fullscreen;
+  gboolean configured, activated, maximized, minimized, fullscreen;
   char *title;
   char *app_id;
 };
@@ -108,7 +109,7 @@ handle_zwlr_foreign_toplevel_handle_state(
 {
   PhoshToplevel *self = data;
   enum zwlr_foreign_toplevel_handle_v1_state *value;
-  gboolean activated = FALSE, maximized = FALSE, fullscreen = FALSE;
+  gboolean activated = FALSE, maximized = FALSE, minimized = FALSE, fullscreen = FALSE;
 
   g_return_if_fail (PHOSH_IS_TOPLEVEL (self));
   wl_array_for_each (value, state) {
@@ -119,6 +120,9 @@ handle_zwlr_foreign_toplevel_handle_state(
     }
     if (*value == ZWLR_FOREIGN_TOPLEVEL_HANDLE_V1_STATE_MAXIMIZED) {
       maximized = TRUE;
+    }
+    if (*value == ZWLR_FOREIGN_TOPLEVEL_HANDLE_V1_STATE_MINIMIZED) {
+      minimized = TRUE;
     }
     if (*value == ZWLR_FOREIGN_TOPLEVEL_HANDLE_V1_STATE_FULLSCREEN) {
       fullscreen = TRUE;
@@ -133,6 +137,11 @@ handle_zwlr_foreign_toplevel_handle_state(
   if (self->maximized != maximized) {
     self->maximized = maximized;
     g_object_notify_by_pspec (G_OBJECT (self), props[PHOSH_TOPLEVEL_PROP_MAXIMIZED]);
+  }
+
+  if (self->minimized != minimized) {
+    self->minimized = minimized;
+    g_object_notify_by_pspec (G_OBJECT (self), props[PHOSH_TOPLEVEL_PROP_MINIMIZED]);
   }
 
   if (self->fullscreen != fullscreen) {
@@ -266,6 +275,9 @@ phosh_toplevel_get_property (GObject    *object,
   case PHOSH_TOPLEVEL_PROP_MAXIMIZED:
     g_value_set_boolean (value, self->maximized);
     break;
+  case PHOSH_TOPLEVEL_PROP_MINIMIZED:
+    g_value_set_boolean (value, self->minimized);
+    break;
   case PHOSH_TOPLEVEL_PROP_FULLSCREEN:
     g_value_set_boolean (value, self->fullscreen);
     break;
@@ -321,6 +333,14 @@ phosh_toplevel_class_init (PhoshToplevelClass *klass)
     g_param_spec_boolean ("maximized",
                           "maximized",
                           "Whether the toplevel is currently maximized",
+                          FALSE,
+                          G_PARAM_READABLE |
+                          G_PARAM_STATIC_STRINGS);
+
+  props[PHOSH_TOPLEVEL_PROP_MINIMIZED] =
+    g_param_spec_boolean ("minimized",
+                          "minimized",
+                          "Whether the toplevel is currently minimized",
                           FALSE,
                           G_PARAM_READABLE |
                           G_PARAM_STATIC_STRINGS);
@@ -466,4 +486,28 @@ phosh_toplevel_fullscreen (PhoshToplevel *self, gboolean fullscreen)
     zwlr_foreign_toplevel_handle_v1_set_fullscreen (self->handle, NULL);
   else
     zwlr_foreign_toplevel_handle_v1_unset_fullscreen (self->handle);
+}
+
+
+void
+phosh_toplevel_maximize (PhoshToplevel *self, gboolean maximized)
+{
+  g_return_if_fail (PHOSH_IS_TOPLEVEL (self));
+
+  if (maximized)
+    zwlr_foreign_toplevel_handle_v1_set_maximized (self->handle);
+  else
+    zwlr_foreign_toplevel_handle_v1_unset_maximized (self->handle);
+}
+
+
+void
+phosh_toplevel_minimize (PhoshToplevel *self, gboolean minimized)
+{
+  g_return_if_fail (PHOSH_IS_TOPLEVEL (self));
+
+  if (minimized)
+    zwlr_foreign_toplevel_handle_v1_set_minimized (self->handle);
+  else
+    zwlr_foreign_toplevel_handle_v1_unset_minimized (self->handle);
 }
