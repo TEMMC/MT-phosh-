@@ -24,10 +24,21 @@ jobs:
           apt-get build-dep -y phosh
       - uses: actions/checkout@v4
       - name: Configure
-        run: meson setup _build
+        run: meson setup _build --prefix=/usr
       - name: Compile
         run: meson compile -C _build
       - name: Run non-screenshot tests
         run: |
           apt-get install -y xvfb
           xvfb-run meson test --no-suite screenshots -C _build --print-errorlogs
+      - name: Stage installation
+        run: |
+          DESTDIR="$PWD/_stage" meson install -C _build
+          tar -C _stage -czf "$PWD/mt-phosh-linux-install.tar.gz" .
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mt-phosh-linux-install
+          path: mt-phosh-linux-install.tar.gz
+          if-no-files-found: error
+          retention-days: 14
