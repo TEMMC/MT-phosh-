@@ -299,6 +299,9 @@ on_activity_clicked (PhoshOverview *self, PhoshActivity *activity)
              phosh_activity_get_app_id (activity),
              phosh_toplevel_get_title (toplevel));
 
+    if (phosh_toplevel_is_minimized (toplevel))
+      phosh_toplevel_minimize (toplevel, FALSE);
+
     phosh_toplevel_activate (toplevel, phosh_wayland_get_wl_seat (phosh_wayland_get_default ()));
 
     phosh_splash_manager_lower_all (priv->splash_manager);
@@ -318,6 +321,22 @@ on_activity_clicked (PhoshOverview *self, PhoshActivity *activity)
 
   g_signal_emit (self, signals[ACTIVITY_RAISED], 0, activity);
   g_signal_emit (self, signals[FOCUSED_ACTIVITY_CHANGED], 0, activity);
+}
+
+
+static void
+on_activity_minimized (PhoshOverview *self, PhoshActivity *activity)
+{
+  PhoshToplevel *toplevel;
+
+  g_return_if_fail (PHOSH_IS_OVERVIEW (self));
+  g_return_if_fail (PHOSH_IS_ACTIVITY (activity));
+
+  toplevel = g_object_get_data (G_OBJECT (activity), "toplevel");
+  if (!PHOSH_IS_TOPLEVEL (toplevel))
+    return;
+
+  phosh_toplevel_minimize (toplevel, TRUE);
 }
 
 
@@ -533,6 +552,7 @@ toplevel_to_activity (PhoshOverview *self, PhoshToplevel *toplevel)
 
   g_object_connect (activity,
                     "swapped-signal::closed", on_activity_closed, self,
+                    "swapped-signal::minimized", on_activity_minimized, self,
                     "swapped-signal::fullscreened", on_activity_fullscreened, self,
                     "swapped-signal::notify::has-focus", on_activity_has_focus_changed, self,
                     "swapped-signal::resized", on_activity_resized, self,
