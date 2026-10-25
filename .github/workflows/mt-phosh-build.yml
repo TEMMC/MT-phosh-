@@ -1,0 +1,33 @@
+name: MT Phosh build
+
+on:
+  push:
+    branches: [main, mt-gnome-shell]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: debian:testing
+    steps:
+      - name: Install build tools and Phosh build dependencies
+        run: |
+          apt-get update
+          apt-get install -y ca-certificates git meson ninja-build pkg-config build-essential
+          printf 'Types: deb deb-src\nURIs: http://deb.debian.org/debian\nSuites: testing\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n' > /etc/apt/sources.list.d/debian.sources
+          apt-get update
+          apt-get build-dep -y phosh
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: meson setup _build
+      - name: Compile
+        run: meson compile -C _build
+      - name: Run non-screenshot tests
+        run: |
+          apt-get install -y xvfb
+          xvfb-run meson test --no-suite screenshots -C _build --print-errorlogs
