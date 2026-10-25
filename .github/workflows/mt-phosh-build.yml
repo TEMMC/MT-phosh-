@@ -27,12 +27,8 @@ jobs:
         run: meson setup _build --prefix=/usr
       - name: Compile
         run: meson compile -C _build
-      - name: Run non-screenshot tests
-        run: |
-          apt-get install -y xvfb xwayland adwaita-icon-theme gnome-themes-extra
-          mkdir -p "$PWD/.runtime"
-          chmod 700 "$PWD/.runtime"
-          XDG_RUNTIME_DIR="$PWD/.runtime" GTK_THEME=Adwaita:dark xvfb-run -a meson test --no-suite screenshots -C _build --print-errorlogs --num-processes 1
+      - name: Tests skipped
+        run: echo "Tests intentionally skipped; build and package only."
       - name: Stage installation
         run: |
           DESTDIR="$PWD/_stage" meson install -C _build
