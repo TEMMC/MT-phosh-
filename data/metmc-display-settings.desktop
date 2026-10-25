@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=METMC Display Settings
+Comment=Change display resolution, scaling, text and app-grid icon size
+Exec=metmc-display-settings
+Icon=preferences-desktop-display
+Terminal=false
+Type=Application
+Categories=Settings;HardwareSettings;
