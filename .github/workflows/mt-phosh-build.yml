@@ -29,8 +29,8 @@ jobs:
         run: meson compile -C _build
       - name: Run non-screenshot tests
         run: |
-          apt-get install -y xvfb
-          xvfb-run meson test --no-suite screenshots -C _build --print-errorlogs
+          apt-get install -y xvfb xwayland adwaita-icon-theme gnome-themes-extra
+          GTK_THEME=Adwaita:dark xvfb-run meson test --no-suite screenshots -C _build --print-errorlogs
       - name: Stage installation
         run: |
           DESTDIR="$PWD/_stage" meson install -C _build
