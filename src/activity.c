@@ -57,6 +57,7 @@ typedef struct {
   GtkWidget       *icon;
   GtkWidget       *box;
   GtkWidget       *revealer_close;
+  GtkWidget       *revealer_minimize;
   GtkWidget       *revealer_unfullscreen;
   GtkWidget       *btn_close;
   GtkWidget       *btn_unfullscreen;
@@ -535,10 +536,13 @@ set_hovering (PhoshActivity *self,
   priv->hovering = hovering;
 
   /* Revealer won't animate if not mapped, show it preemptively */
-  if (hovering)
+  if (hovering) {
     gtk_widget_set_visible (priv->revealer_close, TRUE);
+    gtk_widget_set_visible (priv->revealer_minimize, TRUE);
+  }
 
   gtk_revealer_set_reveal_child (GTK_REVEALER (priv->revealer_close), hovering);
+  gtk_revealer_set_reveal_child (GTK_REVEALER (priv->revealer_minimize), hovering);
 }
 
 
@@ -777,6 +781,7 @@ phosh_activity_class_init (PhoshActivityClass *klass)
   gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, icon);
   gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, box);
   gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, revealer_close);
+  gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, revealer_minimize);
   gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, revealer_unfullscreen);
   gtk_widget_class_bind_template_child_private (widget_class, PhoshActivity, spinner);
   gtk_widget_class_bind_template_callback (widget_class, clicked_cb);
