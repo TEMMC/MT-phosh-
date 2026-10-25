@@ -151,3 +151,18 @@ if get_option('searchd')
     install: true,
   )
 endif
+
+
+# METMC's compact-device display and appearance control panel.
+# The helper is installed separately from the Phosh compositor and does not
+# modify compositor configuration unless the user applies a display mode.
+install_data(
+  '../tools/metmc-display-settings.py',
+  install_dir: bindir,
+  install_mode: 'rwxr-xr-x',
+  rename: 'metmc-display-settings',
+)
+install_data(
+  'metmc-display-settings.desktop',
+  install_dir: desktopdir,
+)
