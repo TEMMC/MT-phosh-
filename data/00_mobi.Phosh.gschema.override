@@ -6,9 +6,9 @@ picture-uri='file:///usr/share/backgrounds/gnome/blobs-l.svg'
 picture-uri-dark='file:///usr/share/backgrounds/gnome/blobs-d.svg'
 
 [org.gnome.desktop.interface:Phosh]
-accent-color='yellow'
-clock-show-date=false
-clock-show-weekday=false
+accent-color='blue'
+clock-show-date=true
+clock-show-weekday=true
 color-scheme='prefer-dark'
 
 [org.gnome.desktop.screensaver:Phosh]
@@ -16,7 +16,7 @@ picture-uri='file:///usr/share/backgrounds/gnome/blobs-d.svg'
 picture-options='none'
 
 [org.gnome.desktop.session:Phosh]
-idle-delay=60
+idle-delay=300
 
 [org.gnome.desktop.sound:Phosh]
 theme-name='phosh'

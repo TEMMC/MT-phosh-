@@ -1,0 +1,42 @@
+name: MT Phosh build
+
+on:
+  push:
+    branches: [main, mt-gnome-shell]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    container: debian:testing
+    steps:
+      - name: Install build tools and Phosh build dependencies
+        run: |
+          apt-get update
+          apt-get install -y ca-certificates git meson ninja-build pkg-config build-essential
+          printf 'Types: deb deb-src\nURIs: http://deb.debian.org/debian\nSuites: testing\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n' > /etc/apt/sources.list.d/debian.sources
+          apt-get update
+          apt-get build-dep -y phosh
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: meson setup _build --prefix=/usr
+      - name: Compile
+        run: meson compile -C _build
+      - name: Tests skipped
+        run: echo "Tests intentionally skipped; build and package only."
+      - name: Stage installation
+        run: |
+          DESTDIR="$PWD/_stage" meson install -C _build
+          tar -C _stage -czf "$PWD/mt-phosh-linux-install.tar.gz" .
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mt-phosh-linux-install
+          path: mt-phosh-linux-install.tar.gz
+          if-no-files-found: error
+          retention-days: 14

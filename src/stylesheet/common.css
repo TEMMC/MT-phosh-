@@ -1301,3 +1301,241 @@ levelbar trough {
 calendar:selected {
   background-color: @theme_selected_bg_color;
 }
+
+
+/*
+ * MT GNOME-inspired overview
+ *
+ * Keep the existing Phosh layout and compositor contract; these rules only
+ * improve the overview's visual hierarchy and touch targets.
+ */
+.phosh-overview {
+  padding: 12px;
+}
+
+.phosh-overview .phosh-drawingarea {
+  border-radius: 18px;
+  background-color: alpha(@phosh_fg_color, 0.04);
+}
+
+.phosh-overview button {
+  border-radius: 16px;
+  transition: background-color 140ms ease,
+              border-color 140ms ease,
+              box-shadow 140ms ease;
+}
+
+.phosh-overview button:focus {
+  outline: 2px solid @theme_selected_bg_color;
+  outline-offset: 2px;
+}
+
+/* A compact, GNOME-like quick-settings surface with comfortable touch spacing. */
+.phosh-settings-menu button {
+  min-height: 42px;
+}
+
+phosh-quick-setting {
+  min-height: 44px;
+}
+
+
+/* MT desktop mode: GNOME-inspired overview, app grid and panel. */
+.phosh-overview {
+  padding: 10px 12px 14px;
+  background-color: alpha(@phosh_bg_color, 0.94);
+}
+
+.phosh-overview .phosh-drawingarea,
+phosh-activity.phosh-empty .phosh-drawingarea,
+phosh-activity.phosh-maximized .phosh-drawingarea {
+  border-radius: 14px;
+}
+
+phosh-activity > widget > button {
+  border-radius: 14px;
+}
+
+.phosh-activity-close-button {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 20px;
+}
+
+.phosh-search-bar-box {
+  margin: 10px 18px 14px;
+}
+
+.phosh-search-bar {
+  min-height: 44px;
+  border-radius: 22px;
+  padding: 4px 18px;
+  background-color: alpha(@phosh_fg_color, 0.08);
+  border: 1px solid alpha(@phosh_fg_color, 0.12);
+}
+
+.phosh-search-bar:focus {
+  background-color: alpha(@theme_selected_bg_color, 0.12);
+  border-color: @theme_selected_bg_color;
+}
+
+phosh-app-grid-button button,
+phosh-app-grid-folder-button button {
+  border-radius: 14px;
+  padding: 6px;
+  transition: background-color 120ms ease;
+}
+
+phosh-app-grid-button button:focus,
+phosh-app-grid-button button:hover,
+phosh-app-grid-folder-button button:focus,
+phosh-app-grid-folder-button button:hover {
+  background-color: alpha(@phosh_fg_color, 0.09);
+}
+
+.phosh-favorite {
+  border-radius: 14px;
+  padding: 8px;
+}
+
+.phosh-favorite:hover,
+.phosh-favorite:focus {
+  background-color: alpha(@phosh_fg_color, 0.10);
+}
+
+#top-bar {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.phosh-topbar-button {
+  min-height: 36px;
+  border-radius: 18px;
+}
+
+.phosh-settings-menu button {
+  min-height: 44px;
+}
+
+phosh-quick-setting {
+  min-height: 46px;
+}
+
+/* Keep shell transitions short for lower-powered mobile hardware. */
+.phosh-overview *,
+.phosh-settings-menu * {
+  transition-duration: 140ms;
+}
+
+/* MT touch targets: sized for phone use without changing compositor behavior. */
+.phosh-overview .phosh-activity-close-button {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 10px;
+  margin: 6px;
+}
+
+.phosh-overview button,
+.phosh-settings-menu button {
+  min-height: 48px;
+}
+
+.phosh-overview button image {
+  -gtk-icon-size: 24px;
+}
+
+/* Keep animations lightweight on low-memory mobile hardware. */
+.phosh-overview *,
+.phosh-settings-menu * {
+  animation-duration: 140ms;
+  transition-duration: 120ms;
+}
+
+/* METMC mobile polish: larger touch targets, readable status indicators and
+ * restrained motion for low-memory devices. These are shell-only styles;
+ * they do not alter Phoc, Wayland outputs or compositor configuration. */
+#top-bar {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.phosh-topbar-button {
+  min-height: 44px;
+  min-width: 44px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.phosh-settings-menu button,
+.phosh-status-page list row,
+.phosh-settings-list-box list row {
+  min-height: 48px;
+}
+
+phosh-quick-setting {
+  min-height: 48px;
+  font-size: 11pt;
+}
+
+.phosh-settings-menu scale,
+.phosh-status-page scale {
+  min-height: 36px;
+}
+
+.phosh-search-bar {
+  min-height: 48px;
+}
+
+.phosh-app-grid-button button,
+.phosh-app-grid-folder-button button {
+  min-height: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms;
+    transition-duration: 1ms;
+  }
+}
+
+/*
+ * MT Phosh touch-first tuning for compact, low-memory devices.
+ * Keep compositor behavior unchanged; only adjust shell widget sizing
+ * and avoid expensive decorative animations.
+ */
+button,
+modelbutton {
+  min-height: 44px;
+}
+
+.phosh-settings-menu button,
+.phosh-status-page button,
+.phosh-settings-list-box button {
+  min-height: 48px;
+}
+
+phosh-quick-setting button {
+  min-height: 48px;
+  padding: 10px 14px;
+}
+
+.phosh-settings-list-box list row,
+.phosh-status-page list row {
+  min-height: 48px;
+}
+
+.phosh-search-bar {
+  min-height: 44px;
+}
+
+.phosh-activity,
+.phosh-activity *,
+.phosh-overview,
+.phosh-overview * {
+  transition-duration: 100ms;
+  animation-duration: 100ms;
+}
