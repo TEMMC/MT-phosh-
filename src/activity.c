@@ -228,13 +228,6 @@ minimized_cb (PhoshActivity *self)
 
 
 static void
-minimized_cb (PhoshActivity *self)
-{
-  g_signal_emit (self, signals[MINIMIZED], 0);
-}
-
-
-static void
 closed_cb (PhoshActivity *self)
 {
   PhoshActivityPrivate *priv = phosh_activity_get_instance_private (self);
