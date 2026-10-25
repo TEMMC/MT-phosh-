@@ -1428,3 +1428,27 @@ phosh-quick-setting {
 .phosh-settings-menu * {
   transition-duration: 140ms;
 }
+
+/* MT touch targets: sized for phone use without changing compositor behavior. */
+.phosh-overview .phosh-activity-close-button {
+  min-width: 48px;
+  min-height: 48px;
+  padding: 10px;
+  margin: 6px;
+}
+
+.phosh-overview button,
+.phosh-settings-menu button {
+  min-height: 48px;
+}
+
+.phosh-overview button image {
+  -gtk-icon-size: 24px;
+}
+
+/* Keep animations lightweight on low-memory mobile hardware. */
+.phosh-overview *,
+.phosh-settings-menu * {
+  animation-duration: 140ms;
+  transition-duration: 120ms;
+}
