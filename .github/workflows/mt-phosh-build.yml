@@ -30,7 +30,9 @@ jobs:
       - name: Run non-screenshot tests
         run: |
           apt-get install -y xvfb xwayland adwaita-icon-theme gnome-themes-extra
-          GTK_THEME=Adwaita:dark xvfb-run meson test --no-suite screenshots -C _build --print-errorlogs
+          mkdir -p "$PWD/.runtime"
+          chmod 700 "$PWD/.runtime"
+          XDG_RUNTIME_DIR="$PWD/.runtime" GTK_THEME=Adwaita:dark xvfb-run -a meson test --no-suite screenshots -C _build --print-errorlogs --num-processes 1
       - name: Stage installation
         run: |
           DESTDIR="$PWD/_stage" meson install -C _build
