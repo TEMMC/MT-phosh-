@@ -1452,3 +1452,52 @@ phosh-quick-setting {
   animation-duration: 140ms;
   transition-duration: 120ms;
 }
+
+/* METMC mobile polish: larger touch targets, readable status indicators and
+ * restrained motion for low-memory devices. These are shell-only styles;
+ * they do not alter Phoc, Wayland outputs or compositor configuration. */
+#top-bar {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.phosh-topbar-button {
+  min-height: 44px;
+  min-width: 44px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.phosh-settings-menu button,
+.phosh-status-page list row,
+.phosh-settings-list-box list row {
+  min-height: 48px;
+}
+
+phosh-quick-setting {
+  min-height: 48px;
+  font-size: 11pt;
+}
+
+.phosh-settings-menu scale,
+.phosh-status-page scale {
+  min-height: 36px;
+}
+
+.phosh-search-bar {
+  min-height: 48px;
+}
+
+.phosh-app-grid-button button,
+.phosh-app-grid-folder-button button {
+  min-height: 48px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms;
+    transition-duration: 1ms;
+  }
+}
