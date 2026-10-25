@@ -454,6 +454,14 @@ phosh_toplevel_is_maximized (PhoshToplevel *self)
 
 
 gboolean
+phosh_toplevel_is_minimized (PhoshToplevel *self)
+{
+  g_return_val_if_fail (PHOSH_IS_TOPLEVEL (self), FALSE);
+  return self->minimized;
+}
+
+
+gboolean
 phosh_toplevel_is_fullscreen (PhoshToplevel *self)
 {
   g_return_val_if_fail (PHOSH_IS_TOPLEVEL (self), FALSE);
