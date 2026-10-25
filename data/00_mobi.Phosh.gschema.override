@@ -6,7 +6,7 @@ picture-uri='file:///usr/share/backgrounds/gnome/blobs-l.svg'
 picture-uri-dark='file:///usr/share/backgrounds/gnome/blobs-d.svg'
 
 [org.gnome.desktop.interface:Phosh]
-accent-color='yellow'
+accent-color='blue'
 clock-show-date=true
 clock-show-weekday=true
 color-scheme='prefer-dark'
