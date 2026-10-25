@@ -25,7 +25,10 @@ struct zwlr_foreign_toplevel_handle_v1 *phosh_toplevel_get_parent_handle (PhoshT
 gboolean phosh_toplevel_is_configured (PhoshToplevel *self);
 gboolean phosh_toplevel_is_activated (PhoshToplevel *self);
 gboolean phosh_toplevel_is_maximized (PhoshToplevel *self);
+gboolean phosh_toplevel_is_minimized (PhoshToplevel *self);
 gboolean phosh_toplevel_is_fullscreen (PhoshToplevel *self);
 void phosh_toplevel_activate (PhoshToplevel *self, struct wl_seat *seat);
 void phosh_toplevel_close (PhoshToplevel *self);
 void phosh_toplevel_fullscreen (PhoshToplevel *self, gboolean fullscreen);
+void phosh_toplevel_maximize (PhoshToplevel *self, gboolean maximized);
+void phosh_toplevel_minimize (PhoshToplevel *self, gboolean minimized);
